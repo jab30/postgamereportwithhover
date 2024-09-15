@@ -159,10 +159,12 @@ fig.update_layout(
     xaxis_title="Horizontal Break",
     yaxis_title="Vertical Break",
     xaxis=dict(range=[-25, 25]),
-    yaxis=dict(range=[-25, 25])
+    yaxis=dict(range=[-25, 25]),
+    autosize=True  # Ensures the plot scales to fit the container
 )
 
-st.plotly_chart(fig)
+# Render Plotly chart with responsive width
+st.plotly_chart(fig, use_container_width=True)
 
 # Plotting Velocity Distribution using KDE with Plotly
 st.subheader(f"{pitcher}: Velocity Distribution (KDE)")
