@@ -107,8 +107,8 @@ fig.add_trace(go.Scatter(
     marker=dict(color=filtered_data['PitchType'].map(pitch_colors), size=8),
     text=filtered_data['PitchType'],
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
-                  '<b>Vertical Break:</b> %{x}<br>' +
-                  '<b>Horizontal Break:</b> %{y}<br>' +
+                  '<b>Vertical Break:</b> %{y}<br>' +
+                  '<b>Horizontal Break:</b> %{x}<br>' +
                   '<b>Release Speed:</b> %{customdata[0]}<extra></extra>',
     customdata=filtered_data[['RelSpeed']].values
 ))
@@ -127,8 +127,8 @@ for _, row in avg_breaks.iterrows():
         marker=dict(size=32, color=pitch_colors[row['PitchType']], opacity=0.35, line=dict(color='black', width=2)),
         text=row['PitchType'],
         hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
-                      '<b>Horizontal Break:</b> %{x}<br>' +
-                      '<b>Vertical Break:</b> %{y}<extra></extra>'
+                      '<b>Vertical Break:</b> %{y}<br>' +
+                      '<b>Horizontal Break:</b> %{x}<extra></extra>'
     ))
 
 # Add origin lines
