@@ -107,8 +107,8 @@ fig.add_trace(go.Scatter(
     marker=dict(color=filtered_data['PitchType'].map(pitch_colors), size=8),
     text=filtered_data['PitchType'],
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
-                  '<b>Horizontal Break:</b> %{x}<br>' +
-                  '<b>Vertical Break:</b> %{y}<br>' +
+                  '<b>Vertical Break:</b> %{x}<br>' +
+                  '<b>Horizontal Break:</b> %{y}<br>' +
                   '<b>Release Speed:</b> %{customdata[0]}<extra></extra>',
     customdata=filtered_data[['RelSpeed']].values
 ))
