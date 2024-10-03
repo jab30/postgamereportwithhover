@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -107,8 +108,8 @@ fig.add_trace(go.Scatter(
     marker=dict(color=filtered_data['PitchType'].map(pitch_colors), size=8),
     text=filtered_data['PitchType'],
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
-                  '<b>Vertical Break:</b> %{y}<br>' +
                   '<b>Horizontal Break:</b> %{x}<br>' +
+                  '<b>Vertical Break:</b> %{y}<br>' +
                   '<b>Release Speed:</b> %{customdata[0]}<extra></extra>',
     customdata=filtered_data[['RelSpeed']].values
 ))
@@ -124,11 +125,11 @@ for _, row in avg_breaks.iterrows():
         x=[row['avgHorzBreak']],
         y=[row['avgVertBreak']],
         mode='markers',
-        marker=dict(size=32, color=pitch_colors[row['PitchType']], opacity=0.35, line=dict(color='black', width=2)),
+        marker=dict(size=15, color=pitch_colors[row['PitchType']], opacity=0.95, line=dict(color='black', width=2)),
         text=row['PitchType'],
         hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
-                      '<b>Vertical Break:</b> %{y}<br>' +
-                      '<b>Horizontal Break:</b> %{x}<extra></extra>'
+                      '<b>Horizontal Break:</b> %{x}<br>' +
+                      '<b>Vertical Break:</b> %{y}<extra></extra>'
     ))
 
 # Add origin lines
@@ -159,12 +160,10 @@ fig.update_layout(
     xaxis_title="Horizontal Break",
     yaxis_title="Vertical Break",
     xaxis=dict(range=[-25, 25]),
-    yaxis=dict(range=[-25, 25]),
-    autosize=True  # Ensures the plot scales to fit the container
+    yaxis=dict(range=[-25, 25])
 )
 
-# Render Plotly chart with responsive width
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig)
 
 # Plotting Velocity Distribution using KDE with Plotly
 st.subheader(f"{pitcher}: Velocity Distribution (KDE)")
