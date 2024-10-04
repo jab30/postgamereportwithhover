@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -96,6 +95,22 @@ metrics = metrics[
 st.subheader(f"{pitcher}: Pitch Metrics")
 st.dataframe(metrics)
 
+# Add strike zone and home plate shape definitions
+home_plate = go.Scatter(
+    x=[-0.85, 0.85, 0, -0.85],
+    y=[0, 0, -0.43, 0],
+    mode='lines',
+    line=dict(color="Black", width=2),
+    name='Home Plate'
+)
+
+strike_zone = go.Scatter(
+    x=[-0.71, 0.71, 0.71, -0.71, -0.71],
+    y=[1.6, 1.6, 3.5, 3.5, 1.6],
+    mode='lines',
+    line=dict(color="Red", width=2),
+    name='Strike Zone'
+)
 # Plotting Pitch Movement with Plotly
 st.subheader(f"{pitcher}: Pitch Movement")
 fig = go.Figure()
@@ -108,10 +123,12 @@ fig.add_trace(go.Scatter(
     marker=dict(color=filtered_data['PitchType'].map(pitch_colors), size=8),
     text=filtered_data['PitchType'],
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
-                  '<b>Horizontal Break:</b> %{x}<br>' +
-                  '<b>Vertical Break:</b> %{y}<br>' +
-                  '<b>Release Speed:</b> %{customdata[0]}<extra></extra>',
-    customdata=filtered_data[['RelSpeed']].values
+                  '<b>Release Speed:</b> %{customdata[0]}<br>' +
+                  '<b>Vertical Break:</b> %{customdata[1]}<br>' +
+                  '<b>Horizontal Break:</b> %{customdata[2]}<br>' +
+                  '<b>Vertical Approach Angle:</b> %{customdata[3]}<br>' +
+                  '<b>Pitch Call:</b> %{customdata[4]}<extra></extra>',
+    customdata=filtered_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak', 'VertApprAngle', 'PitchCall']].values
 ))
 
 # Add average breaks as larger, lightly shaded circles
@@ -165,6 +182,7 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
+
 # Plotting Velocity Distribution using KDE with Plotly
 st.subheader(f"{pitcher}: Velocity Distribution (KDE)")
 fig = go.Figure()
@@ -207,8 +225,9 @@ fig.add_trace(go.Scatter(
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
                   '<b>Release Speed:</b> %{customdata[0]}<br>' +
                   '<b>Vertical Break:</b> %{customdata[1]}<br>' +
-                  '<b>Horizontal Break:</b> %{customdata[2]}<extra></extra>',
-    customdata=filtered_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak']].values
+                  '<b>Horizontal Break:</b> %{customdata[2]}<br>' +
+                  '<b>Vertical Approach Angle:</b> %{customdata[3]}<br>' ,
+    customdata=filtered_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak', 'VertApprAngle']].values
 ))
 
 # Add home plate and strike zone
@@ -249,17 +268,19 @@ fig = go.Figure()
 
 # Scatter plot for Strike Swinging
 fig.add_trace(go.Scatter(
-    x=strike_swinging_data['PlateLocSide'],
-    y=strike_swinging_data['PlateLocHeight'],
+    x=filtered_data['PlateLocSide'],
+    y=filtered_data['PlateLocHeight'],
     mode='markers',
-    marker=dict(color=strike_swinging_data['PitchType'].map(pitch_colors), size=8),
-    text=strike_swinging_data['PitchType'],
+    marker=dict(color=filtered_data['PitchType'].map(pitch_colors), size=8),
+    text=filtered_data['PitchType'],
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
                   '<b>Release Speed:</b> %{customdata[0]}<br>' +
                   '<b>Vertical Break:</b> %{customdata[1]}<br>' +
-                  '<b>Horizontal Break:</b> %{customdata[2]}<extra></extra>',
-    customdata=strike_swinging_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak']].values
+                  '<b>Horizontal Break:</b> %{customdata[2]}<br>' +
+                  '<b>Vertical Approach Angle:</b> %{customdata[3]}<br>',
+    customdata=filtered_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak', 'VertApprAngle']].values
 ))
+
 
 # Add home plate and strike zone
 fig.add_trace(home_plate)
@@ -283,16 +304,17 @@ fig = go.Figure()
 
 # Scatter plot for Chase Pitches
 fig.add_trace(go.Scatter(
-    x=chase_pitches_data['PlateLocSide'],
-    y=chase_pitches_data['PlateLocHeight'],
+    x=filtered_data['PlateLocSide'],
+    y=filtered_data['PlateLocHeight'],
     mode='markers',
-    marker=dict(color=chase_pitches_data['PitchType'].map(pitch_colors), size=8),
-    text=chase_pitches_data['PitchType'],
+    marker=dict(color=filtered_data['PitchType'].map(pitch_colors), size=8),
+    text=filtered_data['PitchType'],
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
                   '<b>Release Speed:</b> %{customdata[0]}<br>' +
                   '<b>Vertical Break:</b> %{customdata[1]}<br>' +
-                  '<b>Horizontal Break:</b> %{customdata[2]}<extra></extra>',
-    customdata=chase_pitches_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak']].values
+                  '<b>Horizontal Break:</b> %{customdata[2]}<br>' +
+                  '<b>Vertical Approach Angle:</b> %{customdata[3]}<br>',
+    customdata=filtered_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak', 'VertApprAngle']].values
 ))
 
 # Add home plate and strike zone
@@ -317,16 +339,17 @@ fig = go.Figure()
 
 # Scatter plot for Called Strikes
 fig.add_trace(go.Scatter(
-    x=called_strikes_data['PlateLocSide'],
-    y=called_strikes_data['PlateLocHeight'],
+    x=filtered_data['PlateLocSide'],
+    y=filtered_data['PlateLocHeight'],
     mode='markers',
-    marker=dict(color=called_strikes_data['PitchType'].map(pitch_colors), size=8),
-    text=called_strikes_data['PitchType'],
+    marker=dict(color=filtered_data['PitchType'].map(pitch_colors), size=8),
+    text=filtered_data['PitchType'],
     hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
                   '<b>Release Speed:</b> %{customdata[0]}<br>' +
                   '<b>Vertical Break:</b> %{customdata[1]}<br>' +
-                  '<b>Horizontal Break:</b> %{customdata[2]}<extra></extra>',
-    customdata=called_strikes_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak']].values
+                  '<b>Horizontal Break:</b> %{customdata[2]}<br>' +
+                  '<b>Vertical Approach Angle:</b> %{customdata[3]}<br>',
+    customdata=filtered_data[['RelSpeed', 'InducedVertBreak', 'HorzBreak', 'VertApprAngle']].values
 ))
 
 # Add home plate and strike zone
