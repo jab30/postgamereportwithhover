@@ -142,7 +142,7 @@ for _, row in avg_breaks.iterrows():
         x=[row['avgHorzBreak']],
         y=[row['avgVertBreak']],
         mode='markers',
-        marker=dict(size=30, color=pitch_colors[row['PitchType']], opacity=0.55, line=dict(color='black', width=2)),
+        marker=dict(size=20, color=pitch_colors[row['PitchType']], opacity=0.55, line=dict(color='black', width=2)),
         text=row['PitchType'],
         hovertemplate='<b>Pitch Type:</b> %{text}<br>' +
                       '<b>Horizontal Break:</b> %{x}<br>' +
