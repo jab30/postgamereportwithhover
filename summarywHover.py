@@ -24,7 +24,7 @@ pitch_colors = {
 @st.cache_data
 def load_data():
     # Adjust the path for the deployment environment
-    data_file = 'VSGA - Sheet1 (1).csv'
+    data_file = '20241005-KennesawWalterKelly-Private-2_unverified.csv'
     if not os.path.isfile(data_file):
         st.error(f"Data file {data_file} not found.")
         return pd.DataFrame()  # Return an empty DataFrame if the file is not found
