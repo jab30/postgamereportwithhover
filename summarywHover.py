@@ -23,13 +23,19 @@ pitch_colors = {
 # Define function to load data
 @st.cache_data
 def load_data():
-    # Adjust the path for the deployment environment
-    data_file = '20241005-KennesawWalterKelly-Private-2_unverified.csv'
-    if not os.path.isfile(data_file):
-        st.error(f"Data file {data_file} not found.")
-        return pd.DataFrame()  # Return an empty DataFrame if the file is not found
+    data_files = [
+        '20241004-KennesawWalterKelly-Private-1_unverified.csv',
+        '20241005-KennesawWalterKelly-Private-2_unverified.csv'
+    ]
 
-    df = pd.read_csv(data_file)
+    all_data = pd.DataFrame()
+
+    for data_file in data_files:
+        if not os.path.isfile(data_file):
+            st.error(f"Data file {data_file} not found.")
+            return pd.DataFrame()
+
+        df = pd.read_csv(data_file)
 
     # Data transformation similar to R code
     df = df.dropna(subset=["HorzBreak"])
