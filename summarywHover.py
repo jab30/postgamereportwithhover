@@ -16,7 +16,7 @@ pitch_colors = {
     "ChangeUp": '#F79E70',
     "Splitter": '#90EE32',
     "Cutter": "#BE5FA0",
-    "Unknown": '#9C8975',
+    "Undefined": '#9C8975',
     "PitchOut": '#472C30'
 }
 
